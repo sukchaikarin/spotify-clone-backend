@@ -5,7 +5,8 @@ import databaseClient from "./configs/database.mjs";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import logging from "morgan";
-import apiRoute from "./api/api.js";
+//import apiRoute from "./api/api.js";
+import helmet from "helmet";
 
 const PORT = process.env.PORT || 3000;
 
@@ -39,7 +40,7 @@ webServer.use(
 );
 webServer.use(express.json({ limit: "1gb" })); // for parsing application/json
 webServer.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-//webServer.use(helmet());
+webServer.use(helmet());
 webServer.use(cookieParser());
 webServer.use(morgan("dev"));
 webServer.use(logging("combined"));
@@ -49,7 +50,13 @@ const USER_DATA_KEYS = ["username", "password", "name", "age", "weight"];
 const LOGIN_DATA_KEYS = ["username", "password"];
 
 // server routes
-webServer.use("/api", apiRoute);
+//webServer.use("/api", apiRoute);
+
+
+webServer.get("/", (req, res) => {
+    res.send("Welcome to API Spotify-Clone Project with Express ")
+})
+
 webServer.use((err, req, res, next) => {
     console.error(err.stack);
 
